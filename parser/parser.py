@@ -46,3 +46,4 @@ if __name__ == '__main__':
     manager.delete_table()
     manager.create_table()
     main()
+    print('запустился парсер')

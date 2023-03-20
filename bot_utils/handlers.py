@@ -1,7 +1,9 @@
 from aiogram import types
+from aiogram.dispatcher import FSMContext
 
 from parser.parser import manager
 from .keybords import get_menu_button
+from state import TVShowState
 
 
 async def welcome_message(message: types.Message):
@@ -18,3 +20,27 @@ async def get_tv_shows(callback: types.CallbackQuery):
         text += f'{show[1]}) <a href="{show[5]}">{show[2]}</a>, {show[3]}, rating: {show[4]}\n\n'
 
     await callback.message.answer(text, parse_mode='HTML')
+
+
+async def set_tv_shows(callback: types.CallbackQuery):
+    await callback.message.answer('пожалуйста, вставьте ссылку сериала на imdb')
+    await TVShowState.add_tv_shows.set()
+
+
+async def add_tv_shows(message: types.Message, state: FSMContext):
+    print(message.text)
+    if 'imdb.com/' in message.text:
+        with open('shows.txt', 'a') as file:
+            file.write(f'{message.text}\n')
+        await message.answer('успешно!')
+    else:
+        await message.answer('введите, пожалуйста, ссылку с imdb')
+    await state.finish()
+
+
+async def show_shows(callback: types.CallbackQuery):
+    await callback.message.answer('ваш список сериалов')
+    with open('shows.txt', 'r') as file:
+        shows = file.readlines()
+        for show in shows:
+            await callback.message.answer(show)
