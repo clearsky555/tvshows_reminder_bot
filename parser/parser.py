@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -47,3 +49,19 @@ if __name__ == '__main__':
     manager.create_table()
     main()
     print('запустился парсер')
+
+
+def check_new_episode(url):
+    html = get_html(url)
+    soup = BeautifulSoup(html, 'html.parser')
+    content = soup.find('section', {'class': 'border_all_dashed'})
+    try:
+        date_tag = content.find('time', {'class':'c_g2'})
+        date_string = date_tag.get('datetime')
+        try:
+            date = datetime.strptime(date_string, '%Y-%m-%d')
+            return date
+        except ValueError:
+            return 'данных о выходе новых серий нет'
+    except AttributeError:
+        return 'данных о выходе новых серий нет'
