@@ -5,6 +5,7 @@ from sqlalchemy import (
     Column,
     Integer,
     String,
+    select,
 
 )
 
@@ -63,3 +64,50 @@ class TVShowsManager():
             result = connect.execute(query)
             shows = result.fetchall()
         return shows
+
+
+class UsersManager:
+    def __init__(self, engine) -> None:
+        self.engine = engine
+        self.user = self.get_users_schema()
+
+    def get_users_schema(self):
+        users = Table(
+            'users', meta,
+            Column('id', Integer, primary_key=True),
+            Column('user_id', String(15)),
+            Column('link', String(255))
+        )
+        return users
+
+    def insert_user_show(self, data):
+        ins = self.user.insert().values(
+            **data
+        )
+        with self.engine.connect() as connect:
+            connect.execute(ins)
+            connect.commit()
+
+    def get_shows(self):
+        query = self.user.select()
+        with self.engine.connect() as connect:
+            result = connect.execute(query)
+            users = result.fetchall()
+        return users
+
+    # def search_by_id(self, id):
+    #     query = select(self.user.columns.link).where(self.user.columns.user_id == str(id))
+    #
+    #     connect = self.engine.connect()
+    #     result = connect.execute(query)
+    #     connect.close()
+    #     shows = result.fetchall()
+    #     return shows
+
+    def search_by_id(self, id):
+        query = select(self.user.columns.link).where(self.user.columns.user_id == str(id))
+
+        with self.engine.connect() as connect:
+            result = connect.execute(query)
+            links = [row[0] for row in result]
+        return links

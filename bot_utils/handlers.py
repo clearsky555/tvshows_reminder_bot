@@ -1,10 +1,12 @@
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
+from database import UsersManager, engine
 from parser.parser import manager, check_new_episode
 from .keybords import get_menu_button
 from state import TVShowState
 
+users_manager = UsersManager(engine=engine)
 
 async def welcome_message(message: types.Message):
     text = 'Привет, я бот для отслеживания выхода новых серий ваших любимых сериалов'
@@ -28,10 +30,14 @@ async def set_tv_shows(callback: types.CallbackQuery):
 
 
 async def add_tv_shows(message: types.Message, state: FSMContext):
+    print(message)
     print(message.text)
     if 'toramp.com/' in message.text:
-        with open('shows.txt', 'a') as file:
-            file.write(f'{message.text}\n')
+        user_id = message.from_user.id
+        link = message.text
+        data = {'user_id': user_id, 'link': link}
+        users_manager.insert_user_show(data)
+
         await message.answer('успешно!')
     else:
         await message.answer('введите, пожалуйста, ссылку с toramp')
@@ -39,9 +45,14 @@ async def add_tv_shows(message: types.Message, state: FSMContext):
 
 
 async def show_shows(callback: types.CallbackQuery):
-    await callback.message.answer('ваш список сериалов')
-    with open('shows.txt', 'r') as file:
-        shows = file.readlines()
-        for show in shows:
-            # check_new_episode(show)
-            await callback.message.answer(f'{show} - дата выхода новой серии: {check_new_episode(show)}')
+    await callback.message.answer(f'{callback.from_user.first_name}, ваш список сериалов')
+    print(callback)
+    shows = users_manager.search_by_id(callback.from_user.id)
+    print(shows)
+    for show in shows:
+        await callback.message.answer(f'{show} - дата выхода новой серии: {check_new_episode(show)}')
+    # with open('shows.txt', 'r') as file:
+    #     shows = file.readlines()
+    #     for show in shows:
+    #         # check_new_episode(show)
+    #         await callback.message.answer(f'{show} - дата выхода новой серии: {check_new_episode(show)}')
