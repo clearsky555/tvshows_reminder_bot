@@ -44,4 +44,4 @@ async def show_shows(callback: types.CallbackQuery):
         shows = file.readlines()
         for show in shows:
             # check_new_episode(show)
-            await callback.message.answer(f'{show} - дата выхода: {check_new_episode(show)}')
+            await callback.message.answer(f'{show} - дата выхода новой серии: {check_new_episode(show)}')
