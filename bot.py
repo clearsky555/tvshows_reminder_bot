@@ -2,6 +2,7 @@ import asyncio
 
 from aiogram import executor
 
+from parser.parser import launching_parser
 from router import dp
 from send_m import job
 
@@ -18,9 +19,9 @@ def run_schedule():
         time.sleep(1)
 
 
-
 if __name__ == '__main__':
     print('проверка')
+    sch.every().tuesday.at('13:25').do(launching_parser)
     sch.every().day.at('14:05').do(job)
     thread = threading.Thread(target=run_schedule)
     thread.start()

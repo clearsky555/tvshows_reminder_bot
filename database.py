@@ -6,7 +6,7 @@ from sqlalchemy import (
     Integer,
     String,
     select,
-
+    delete,
 )
 
 
@@ -123,5 +123,10 @@ class UsersManager:
             id = [row[0] for row in result]
         return [[id, show]]
 
+    def delete_show_from_db(self, id, show):
+        stmt = delete(self.user).where((self.user.columns.user_id == id) & (self.user.columns.link == show))
+        with self.engine.connect() as conn:
+            conn.execute(stmt)
+            conn.commit()
 
 users_manager = UsersManager(engine=engine)

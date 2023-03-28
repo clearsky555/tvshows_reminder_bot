@@ -44,9 +44,8 @@ def main():
         write_data(data)
 
 
-if __name__ == '__main__':
+def launching_parser():
     print('запустился парсер')
-
     manager.delete_table()
     manager.create_table()
     main()

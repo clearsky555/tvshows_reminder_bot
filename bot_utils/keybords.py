@@ -9,7 +9,9 @@ def get_menu_button():
         'Самые популярные сериалы по версии IMDB', callback_data='tv_shows')
     add_show = types.InlineKeyboardButton(
         'Добавить сериал для отслеживания', callback_data='add_show')
+    delete_show = types.InlineKeyboardButton(
+        'Удалить сериал из отслеживаемого', callback_data='delete_show')
     my_shows = types.InlineKeyboardButton(
         'Мои сериалы', callback_data='my_shows')
-    markup.add(tv_shows, add_show, my_shows)
+    markup.add(tv_shows, add_show, delete_show, my_shows)
     return markup
