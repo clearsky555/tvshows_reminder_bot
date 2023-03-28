@@ -32,6 +32,7 @@ async def set_tv_shows(callback: types.CallbackQuery):
 async def add_tv_shows(message: types.Message, state: FSMContext):
     print(message)
     print(message.text)
+    users_manager.create_table()
     if 'toramp.com/' in message.text:
         user_id = message.from_user.id
         link = message.text
@@ -50,7 +51,7 @@ async def show_shows(callback: types.CallbackQuery):
     shows = users_manager.search_by_id(callback.from_user.id)
     print(shows)
     for show in shows:
-        await callback.message.answer(f'{show} - дата выхода новой серии: {check_new_episode(show)}')
+        await callback.message.answer(f'{show} - дата выхода новой серии: {check_new_episode(show)[1]}')
     # with open('shows.txt', 'r') as file:
     #     shows = file.readlines()
     #     for show in shows:

@@ -45,10 +45,11 @@ def main():
 
 
 if __name__ == '__main__':
+    print('запустился парсер')
+
     manager.delete_table()
     manager.create_table()
     main()
-    print('запустился парсер')
 
 
 def check_new_episode(url):
@@ -60,8 +61,8 @@ def check_new_episode(url):
         date_string = date_tag.get('datetime')
         try:
             date = datetime.strptime(date_string, '%Y-%m-%d')
-            return date
+            return [url, date]
         except ValueError:
-            return 'данных о выходе новых серий нет'
+            return [url, 'данных о выходе новых серий нет']
     except AttributeError:
-        return 'данных о выходе новых серий нет'
+        return [url, 'данных о выходе новых серий нет']

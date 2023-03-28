@@ -18,15 +18,14 @@ def run_schedule():
         time.sleep(1)
 
 
-sch.every().day.at('18:39').do(job)
-thread = threading.Thread(target=run_schedule)
-thread.start()
-
-
 
 if __name__ == '__main__':
     print('проверка')
+    sch.every().day.at('14:05').do(job)
+    thread = threading.Thread(target=run_schedule)
+    thread.start()
     loop = asyncio.get_event_loop()
     loop.create_task(job())
     executor.start_polling(dp, skip_updates=True)
+    thread.join()
     print('код исполняется дальше...')

@@ -76,9 +76,13 @@ class UsersManager:
             'users', meta,
             Column('id', Integer, primary_key=True),
             Column('user_id', String(15)),
-            Column('link', String(255))
+            Column('link', String(255)),
+            extend_existing=True
         )
         return users
+
+    def create_table(self):
+        meta.create_all(self.engine, checkfirst=True)
 
     def insert_user_show(self, data):
         ins = self.user.insert().values(
@@ -95,15 +99,6 @@ class UsersManager:
             users = result.fetchall()
         return users
 
-    # def search_by_id(self, id):
-    #     query = select(self.user.columns.link).where(self.user.columns.user_id == str(id))
-    #
-    #     connect = self.engine.connect()
-    #     result = connect.execute(query)
-    #     connect.close()
-    #     shows = result.fetchall()
-    #     return shows
-
     def search_by_id(self, id):
         query = select(self.user.columns.link).where(self.user.columns.user_id == str(id))
 
@@ -111,3 +106,22 @@ class UsersManager:
             result = connect.execute(query)
             links = [row[0] for row in result]
         return links
+
+    def select_all_shows(self):
+
+        query = select(self.user.columns.link)
+        with self.engine.connect() as connect:
+            result = connect.execute(query)
+            links = [row[0] for row in result]
+        return links
+
+    def get_users_id(self, show):
+        query = select(self.user.columns.user_id).where(self.user.columns.link == show)
+
+        with self.engine.connect() as connect:
+            result = connect.execute(query)
+            id = [row[0] for row in result]
+        return [[id, show]]
+
+
+users_manager = UsersManager(engine=engine)
