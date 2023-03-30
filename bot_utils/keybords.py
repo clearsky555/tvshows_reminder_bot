@@ -12,6 +12,9 @@ def get_menu_button():
     delete_show = types.InlineKeyboardButton(
         'Удалить сериал из отслеживаемого', callback_data='delete_show')
     my_shows = types.InlineKeyboardButton(
-        'Мои сериалы', callback_data='my_shows')
-    markup.add(tv_shows, add_show, delete_show, my_shows)
+        'Проверить дату выхода следующих серий', callback_data='my_shows')
+    my_shows_list = types.InlineKeyboardButton(
+        'Мои сериалы', callback_data='my_shows_list'
+    )
+    markup.add(tv_shows, add_show, delete_show, my_shows, my_shows_list)
     return markup

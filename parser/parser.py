@@ -65,3 +65,11 @@ def check_new_episode(url):
             return [url, 'данных о выходе новых серий нет']
     except AttributeError:
         return [url, 'данных о выходе новых серий нет']
+
+
+def get_show_title(url):
+    html = get_html(url)
+    soup = BeautifulSoup(html, 'html.parser')
+    content = soup.find('header', {'class': 'pagehead'})
+    title = content.find('h1').text.strip()
+    return title

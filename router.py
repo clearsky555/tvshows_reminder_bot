@@ -15,7 +15,7 @@ dp = Dispatcher(bot, storage=storage)
 #Router
 #commands
 dp.register_message_handler(hs.welcome_message, commands=['start'])
-dp.register_message_handler(hs.get_tv_shows, commands=['get_tv_shows'])
+# dp.register_message_handler(hs.get_tv_shows, commands=['get_tv_shows'])
 # dp.register_message_handler(hs.set_tv_shows, commands=['set_tv_shows'])
 
 #text messages
@@ -49,4 +49,9 @@ dp.register_callback_query_handler(
 dp.register_callback_query_handler(
     hs.delete_show,
     lambda c: c.data == 'delete_show'
+)
+
+dp.register_callback_query_handler(
+    hs.user_shows_list,
+    lambda c: c.data == 'my_shows_list'
 )

@@ -76,6 +76,7 @@ class UsersManager:
             'users', meta,
             Column('id', Integer, primary_key=True),
             Column('user_id', String(15)),
+            Column('show_title', String(255)),
             Column('link', String(255)),
             extend_existing=True
         )
@@ -128,5 +129,19 @@ class UsersManager:
         with self.engine.connect() as conn:
             conn.execute(stmt)
             conn.commit()
+
+    def get_show_title_from_db(self, link):
+        query = select(self.user.columns.show_title).where(self.user.columns.link == link)
+        with self.engine.connect() as connect:
+            result = connect.execute(query)
+            title = [row[0] for row in result]
+        return title[0] if title else None
+
+    def get_all_shows_by_id(self, id):
+        query = select(self.user.columns.show_title).where(self.user.columns.user_id == id)
+        with self.engine.connect() as connect:
+            result = connect.execute(query)
+            titles = [row[0] for row in result]
+        return titles
 
 users_manager = UsersManager(engine=engine)
