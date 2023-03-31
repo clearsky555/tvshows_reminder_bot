@@ -93,3 +93,45 @@ async def user_shows_list(callback: types.CallbackQuery):
     for i, show in enumerate(all_shows):
         message += f'{i + 1}. {show}\n'
     await callback.message.answer(message)
+
+
+# ФУНКЦИИ ДЛЯ КОМАНД
+
+async def get_tv_shows_c(message: types.Message):
+    await message.answer('выдаем список сериалов...')
+    shows = manager.get_shows()
+    text = ''
+    for show in shows:
+        text += f'{show[1]}) <a href="{show[5]}">{show[2]}</a>, {show[3]}, rating: {show[4]}\n\n'
+
+    await message.answer(text, parse_mode='HTML')
+
+async def set_tv_shows_c(message: types.Message):
+    text = f'пожалуйста, вставьте ссылку сериала на <a href="https://www.toramp.com/">toramp</a>'
+    await message.answer(text, parse_mode='HTML')
+    await TVShowState.add_tv_shows.set()
+
+async def delete_show_c(message: types.Message):
+    await message.answer('вставьте ссылку на сериал, который хотите удалить')
+    await TVShowState.remove_tv_shows.set()
+
+async def show_shows_c(message: types.Message):
+    await message.answer(f'{message.from_user.first_name}, проверяем выход новых серий...')
+    shows = users_manager.search_by_id(message.from_user.id)
+    # print(shows)
+    for show in shows:
+        title = users_manager.get_show_title_from_db(show)
+        date = check_new_episode(show)[1]
+        try:
+            formatted_date = date.strftime('%d %B %Y')
+            await message.answer(f'{title} - дата выхода новой серии: {formatted_date}')
+        except AttributeError:
+            await message.answer(f'{title} - {date}')
+
+async def user_shows_list_c(message: types.Message):
+    await message.answer(f'{message.from_user.first_name}, ваш список сериалов')
+    all_shows = users_manager.get_all_shows_by_id(message.from_user.id)
+    shows_list = ''
+    for i, show in enumerate(all_shows):
+        shows_list += f'{i + 1}. {show}\n'
+    await message.answer(shows_list)

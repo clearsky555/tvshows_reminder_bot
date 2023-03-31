@@ -25,7 +25,8 @@ async def job():
     # for date in all_dates:
     #     print(date)
     # print(all_dates)
-    all_dates = [['https://www.toramp.com/schedule.php?id=4458', 'данных о выходе новых серий нет'], ['https://www.toramp.com/schedule.php?id=5509', datetime.datetime(2023, 3, 28, 0, 0)], ['https://www.toramp.com/schedule.php?id=3463', datetime.datetime(2023, 3, 28, 0, 0)]]
+    # all_dates = [['https://www.toramp.com/schedule.php?id=4458', 'данных о выходе новых серий нет'], ['https://www.toramp.com/schedule.php?id=5509', datetime.datetime(2023, 3, 28, 0, 0)], ['https://www.toramp.com/schedule.php?id=3463', datetime.datetime(2023, 3, 28, 0, 0)]]
+    all_dates = [['https://www.toramp.com/schedule.php?id=6496', 'данных о выходе новых серий нет'], ['https://www.toramp.com/schedule.php?id=4390', datetime.datetime(2023, 3, 30, 0, 0)], ['https://www.toramp.com/schedule.php?id=5694', 'данных о выходе новых серий нет'], ['https://www.toramp.com/schedule.php?id=3463', datetime.datetime(2023, 4, 2, 0, 0)], ['https://www.toramp.com/schedule.php?id=4458', 'данных о выходе новых серий нет']]
 
 
 

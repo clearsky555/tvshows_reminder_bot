@@ -15,8 +15,12 @@ dp = Dispatcher(bot, storage=storage)
 #Router
 #commands
 dp.register_message_handler(hs.welcome_message, commands=['start'])
-# dp.register_message_handler(hs.get_tv_shows, commands=['get_tv_shows'])
-# dp.register_message_handler(hs.set_tv_shows, commands=['set_tv_shows'])
+dp.register_message_handler(hs.get_tv_shows_c, commands=['get_tv_shows'])
+dp.register_message_handler(hs.set_tv_shows_c, commands=['set_tv_shows'])
+dp.register_message_handler(hs.delete_show_c, commands=['delete_show'])
+dp.register_message_handler(hs.show_shows_c, commands=['check_dates'])
+dp.register_message_handler(hs.user_shows_list_c, commands=['my_shows'])
+
 
 #text messages
 dp.register_message_handler(
