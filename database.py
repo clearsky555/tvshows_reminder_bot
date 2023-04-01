@@ -77,11 +77,18 @@ class UsersManager:
             Column('id', Integer, primary_key=True),
             Column('user_id', String(15)),
             Column('show_title', String(255)),
+            Column('show_date', String(100)),
             Column('link', String(255)),
             extend_existing=True
         )
         return users
 
+    def get_all_data(self):
+        with self.engine.connect() as conn:
+            query = self.user.select()
+            result = conn.execute(query)
+            res = result.fetchall()
+        return res
     def create_table(self):
         meta.create_all(self.engine, checkfirst=True)
 
@@ -143,5 +150,13 @@ class UsersManager:
             result = connect.execute(query)
             titles = [row[0] for row in result]
         return titles
+
+    def delete_row_by_id(self, id):
+        query = self.user.delete().where(self.user.c.id == id)
+        with self.engine.connect() as conn:
+            conn.execute(query)
+            conn.commit()
+
+
 
 users_manager = UsersManager(engine=engine)

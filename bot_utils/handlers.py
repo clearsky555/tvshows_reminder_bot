@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 
 from database import UsersManager, engine
-from parser.parser import manager, check_new_episode, get_show_title
+from parser.parser import manager, get_show_data
 from .keybords import get_menu_button
 from state import TVShowState
 
@@ -38,13 +38,16 @@ async def add_tv_shows(message: types.Message, state: FSMContext):
 
     if 'toramp.com/' in message.text:
         user_id = message.from_user.id
+
         link = message.text
-        show_title = get_show_title(message.text)
+
+        show_title = get_show_data(message.text)[2]
         show_title = show_title.replace('\t\t\t', ' ')
         show_title = show_title.replace('\nсериал', '')
 
-        print(show_title)
-        data = {'user_id': user_id, 'link': link, 'show_title': show_title}
+        show_date = get_show_data(message.text)[1]
+
+        data = {'user_id': user_id, 'link': link, 'show_title': show_title, 'show_date': show_date}
         users_manager.insert_user_show(data)
 
         await message.answer('успешно!')
@@ -78,7 +81,7 @@ async def show_shows(callback: types.CallbackQuery):
     print(shows)
     for show in shows:
         title = users_manager.get_show_title_from_db(show)
-        date = check_new_episode(show)[1]
+        date = get_show_data(show)[1]
         try:
             formatted_date = date.strftime('%d %B %Y')
             await callback.message.answer(f'{title} - дата выхода новой серии: {formatted_date}')
@@ -121,7 +124,7 @@ async def show_shows_c(message: types.Message):
     # print(shows)
     for show in shows:
         title = users_manager.get_show_title_from_db(show)
-        date = check_new_episode(show)[1]
+        date = get_show_data(show)[1]
         try:
             formatted_date = date.strftime('%d %B %Y')
             await message.answer(f'{title} - дата выхода новой серии: {formatted_date}')

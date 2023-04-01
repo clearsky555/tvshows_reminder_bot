@@ -51,25 +51,26 @@ def launching_parser():
     main()
 
 
-def check_new_episode(url):
+def get_show_data(url):
     html = get_html(url)
     soup = BeautifulSoup(html, 'html.parser')
     content = soup.find('section', {'class': 'border_all_dashed'})
+    title = soup.find('header', {'class': 'pagehead'}).find('h1').text.strip()
     try:
         date_tag = content.find('time', {'class':'c_g2'})
         date_string = date_tag.get('datetime')
         try:
             date = datetime.strptime(date_string, '%Y-%m-%d')
-            return [url, date]
+            return [url, date, title]
         except ValueError:
-            return [url, 'данных о выходе новых серий нет']
+            return [url, 'данных о выходе новых серий нет', title]
     except AttributeError:
-        return [url, 'данных о выходе новых серий нет']
+        return [url, 'данных о выходе новых серий нет', title]
 
 
-def get_show_title(url):
-    html = get_html(url)
-    soup = BeautifulSoup(html, 'html.parser')
-    content = soup.find('header', {'class': 'pagehead'})
-    title = content.find('h1').text.strip()
-    return title
+# def get_show_title(url):
+#     html = get_html(url)
+#     soup = BeautifulSoup(html, 'html.parser')
+#     content = soup.find('header', {'class': 'pagehead'})
+#     title = content.find('h1').text.strip()
+#     return title
