@@ -14,19 +14,21 @@ def get_html(URL):
     return response.text
 
 
-URL = 'https://www.imdb.com/chart/tvmeter/?ref_=nv_tvv_mptv'
-html = get_html(URL)
-
-soup = BeautifulSoup(html, 'html.parser')
-content = soup.find('div', {'class':'lister'}).find('tbody', {'class':'lister-list'})
-shows = content.find_all('tr')
+# URL = 'https://www.imdb.com/chart/tvmeter/?ref_=nv_tvv_mptv'
+# html = get_html(URL)
+#
+# soup = BeautifulSoup(html, 'html.parser')
+# print(soup)
+# content = soup.find('div', {'class':'lister'}).find('tbody', {'class':'lister-list'})
+# print(content)
+# shows = content.find_all('tr')
 
 
 def write_data(data):
     result = manager.insert_show(data)
     return result
 
-
+# IMDB больше не парсится
 def main():
     for i, s in enumerate(shows, start=1):
         title = s.find('td', {'class': 'titleColumn'}).find('a').text

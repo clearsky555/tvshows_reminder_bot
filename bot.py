@@ -21,8 +21,8 @@ def run_schedule():
 
 if __name__ == '__main__':
     print('проверка')
-    sch.every().tuesday.at('13:25').do(launching_parser)
-    sch.every().day.at('12:00').do(job)
+    # sch.every().tuesday.at('13:25').do(launching_parser)
+    sch.every().day.at('15:17').do(job)
     thread = threading.Thread(target=run_schedule)
     thread.start()
     loop = asyncio.get_event_loop()

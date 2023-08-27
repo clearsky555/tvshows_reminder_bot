@@ -20,7 +20,11 @@ async def job():
     all_data = users_manager.get_all_data()
     # print(all_data)
     current_date = dt.now().date()
-    # all_data = [(1, '5782005645', 'Новобранец (2018 — ...)', '2023-04-1 00:00:00', 'https://www.toramp.com/schedule.php?id=3551'), (2, '5782005645', 'Одни из нас (2023 — ...)', 'данных о выходе новых серий нет', 'https://www.toramp.com/schedule.php?id=4458'), (3, '5697579498', 'Призрак и Молли Макги (2021 — ...)', '2023-04-08 00:00:00', 'https://www.toramp.com/schedule.php?id=5691'), (4, '5782005645', 'Призрак и Молли Макги (2021 — ...)', '2023-04-08 00:00:00', 'https://www.toramp.com/schedule.php?id=5691')]
+    # all_data = [
+    # (1, '5782005645', 'Новобранец (2018 — ...)', '2023-08-27 00:00:00', 'https://www.toramp.com/schedule.php?id=3551'),
+    # (2, '5782005645', 'Одни из нас (2023 — ...)', 'данных о выходе новых серий нет', 'https://www.toramp.com/schedule.php?id=4458'),
+    # (3, '5697579498', 'Призрак и Молли Макги (2021 — ...)', '2023-04-08 00:00:00', 'https://www.toramp.com/schedule.php?id=5691'),
+    # (4, '5782005645', 'Призрак и Молли Макги (2021 — ...)', '2023-04-08 00:00:00', 'https://www.toramp.com/schedule.php?id=5691')]
     for row in all_data:
         if row[3] != 'данных о выходе новых серий нет' and datetime.datetime.strptime(row[3], '%Y-%m-%d %H:%M:%S').date() == current_date:
             text = f'сегодня выходит новая серия {row[2]}'
